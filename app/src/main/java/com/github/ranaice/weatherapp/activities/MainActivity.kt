@@ -6,8 +6,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.github.ranaice.weatherapp.R
 import com.github.ranaice.weatherapp.adapters.ForecastListAdapter
+import com.github.ranaice.weatherapp.data.Forecast
 import com.github.ranaice.weatherapp.data.Request
 import org.jetbrains.anko.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         val forecastList= find<RecyclerView>(R.id.forecast_list)
         forecastList.layoutManager = LinearLayoutManager(this)
         forecastList.adapter = ForecastListAdapter(items)
+
+        val f1 = Forecast(Date(), 27.5f, "Shiny Day")
+        //Declaration Destructuring
+        val (date, temperatura, details) = f1
 
         val url = "http://api.openweathermap.org/data/2.5/forecast/daily?" +
                 "APPID=15646a06818f61f7b8d7823ca833e1ce&q=94043&mode=json&units=metric&cnt=7"
