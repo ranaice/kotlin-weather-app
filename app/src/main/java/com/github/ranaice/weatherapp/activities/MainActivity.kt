@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import com.github.ranaice.weatherapp.R
 import com.github.ranaice.weatherapp.adapters.ForecastListAdapter
 import com.github.ranaice.weatherapp.domain.commands.RequestForecastCommand
+import com.github.ranaice.weatherapp.domain.model.Forecast
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -28,14 +29,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val forecastList= find<RecyclerView>(R.id.forecast_list)
+        val forecastList = find<RecyclerView>(R.id.forecast_list)
         forecastList.layoutManager = LinearLayoutManager(this)
 
         toast("Iniciando request")
         doAsync {
             val result = RequestForecastCommand("04043").execute()
             uiThread {
-                forecastList.adapter = ForecastListAdapter(result)
+                forecastList.adapter = ForecastListAdapter(result, object : ForecastListAdapter.OnItemClickListener {
+                    override fun invoke(forecast: Forecast) {
+                        toast(forecast.date)
+                    }
+                })
             }
         }
 
